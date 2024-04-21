@@ -5,27 +5,28 @@ from datetime import datetime
 # Replace "C:\Users\vikra\OneDrive\Desktop" with your own Absolute File Path
 desktop_path = os.path.expanduser(r"C:\Users\vikra\OneDrive\Desktop")
 
-# Create folders for different file types
-folders = {
+# Create a dictionary of custom folders and their corresponding file extensions
+custom_folders = {
+    "Photos": [".png", ".jpg", ".jpeg", ".gif"],
     "Documents": [".doc", ".docx", ".txt", ".pdf"],
-    "Images": [".png", ".jpg", ".jpeg", ".gif"],
-    "Videos": [".mp4", ".mov", ".avi"],
     "Music": [".mp3", ".wav"],
+    "Videos": [".mp4", ".mov", ".avi"],
+    "Code": [".py", ".cpp", ".java", ".sh"],
     "Archives": [".zip", ".rar", ".tar", ".gz"],
     "Executables": [".exe", ".msi"],
-    "Scripts": [".py", ".sh"]
+    "Others": []  # Add any other file extensions you want to handle separately
 }
 
-# Create folders if they don't exist
-for folder_name in folders:
+# Create custom folders if they don't exist
+for folder_name, extensions in custom_folders.items():
     folder_path = os.path.join(desktop_path, folder_name)
     os.makedirs(folder_path, exist_ok=True)
 
-# Move files to respective folders based on file type
+# Move files to respective custom folders based on file type
 for file in os.listdir(desktop_path):
     if os.path.isfile(os.path.join(desktop_path, file)):
         file_ext = os.path.splitext(file)[1].lower()
-        for folder_name, extensions in folders.items():
+        for folder_name, extensions in custom_folders.items():
             if file_ext in extensions:
                 src = os.path.join(desktop_path, file)
                 dest = os.path.join(desktop_path, folder_name, file)
