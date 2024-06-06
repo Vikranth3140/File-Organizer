@@ -1,5 +1,6 @@
 import os
 import shutil
+import json
 from datetime import datetime
 import logging
 
@@ -7,24 +8,16 @@ import logging
 logging.basicConfig(filename='file_organizer.log', level=logging.INFO, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Replace "C:\Users\vikra\OneDrive\Desktop" with your own Absolute File Path
-desktop_path = os.path.expanduser(r"C:\Users\vikra\OneDrive\Desktop")
+# Load configuration from JSON file
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
-# Create a dictionary of custom folders and their corresponding file extensions
-custom_folders = {
-    "Photos": [".png", ".jpg", ".jpeg", ".gif"],
-    "Documents": [".doc", ".docx", ".txt", ".pdf"],
-    "Music": [".mp3", ".wav"],
-    "Videos": [".mp4", ".mov", ".avi"],
-    "Code": [".py", ".cpp", ".java", ".sh"],
-    "Archives": [".zip", ".rar", ".tar", ".gz"],
-    "Executables": [".exe", ".msi"],
-    "Others": []  # Add any other file extensions you want to handle separately
-}
+desktop_path = os.path.expanduser(config["desktop_path"])
+custom_folders = config["custom_folders"]
 
 # Create custom folders if they don't exist
 def create_folders():
-    for folder_name, extensions in custom_folders.items():
+    for folder_name in custom_folders.keys():
         folder_path = os.path.join(desktop_path, folder_name)
         os.makedirs(folder_path, exist_ok=True)
 
@@ -38,6 +31,8 @@ def move_files_to_custom_folders():
                 if file_ext in extensions or not extensions:
                     try:
                         dest = os.path.join(desktop_path, folder_name, file)
+                        if os.path.exists(dest):
+                            dest = os.path.join(desktop_path, folder_name, f"{os.path.splitext(file)[0]}_{int(datetime.timestamp(datetime.now()))}{file_ext}")
                         shutil.move(file_path, dest)
                         logging.info(f"Moved file {file} to {folder_name}")
                     except Exception as e:
@@ -58,6 +53,8 @@ def sort_files_by_mod_date():
                 dest_folder = os.path.join(sorted_folder, mod_date)
                 os.makedirs(dest_folder, exist_ok=True)
                 dest_file = os.path.join(dest_folder, file)
+                if os.path.exists(dest_file):
+                    dest_file = os.path.join(dest_folder, f"{os.path.splitext(file)[0]}_{int(datetime.timestamp(datetime.now()))}{os.path.splitext(file)[1]}")
                 shutil.move(file_path, dest_file)
                 logging.info(f"Moved file {file} to {dest_folder}")
             except Exception as e:

@@ -1,0 +1,13 @@
+{
+    "desktop_path": "C:\\Users\\vikra\\OneDrive\\Desktop",
+    "custom_folders": {
+        "Photos": [".png", ".jpg", ".jpeg", ".gif"],
+        "Documents": [".doc", ".docx", ".txt", ".pdf"],
+        "Music": [".mp3", ".wav"],
+        "Videos": [".mp4", ".mov", ".avi"],
+        "Code": [".py", ".cpp", ".java", ".sh"],
+        "Archives": [".zip", ".rar", ".tar", ".gz"],
+        "Executables": [".exe", ".msi"],
+        "Others": []
+    }
+}
