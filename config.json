@@ -9,5 +9,6 @@
         "Archives": [".zip", ".rar", ".tar", ".gz"],
         "Executables": [".exe", ".msi"],
         "Others": []
-    }
+    },
+    "ignore_files": ["file_organizer.log", "config.json"]
 }
