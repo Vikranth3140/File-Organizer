@@ -1,0 +1,12 @@
+# requirements.txt
+
+# argparse is included in Python's standard library
+# logging is included in Python's standard library
+# shutil is included in Python's standard library
+# json is included in Python's standard library
+# os is included in Python's standard library
+# datetime is included in Python's standard library
+
+
+# Specify the minimum version of Python required
+python>=3.6
