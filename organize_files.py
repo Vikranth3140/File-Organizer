@@ -14,6 +14,8 @@ with open('config.json') as config_file:
 
 desktop_path = os.path.expanduser(config["desktop_path"])
 custom_folders = config["custom_folders"]
+# If the current working files are in your desktop path
+ignore_files = config.get("ignore_files", ["file_organizer.log", "config.json"])
 
 # Create custom folders if they don't exist
 def create_folders():
@@ -24,6 +26,8 @@ def create_folders():
 # Move files to respective custom folders based on file type
 def move_files_to_custom_folders():
     for file in os.listdir(desktop_path):
+        if file in ignore_files:
+            continue
         file_path = os.path.join(desktop_path, file)
         if os.path.isfile(file_path):
             file_ext = os.path.splitext(file)[1].lower()
@@ -39,13 +43,14 @@ def move_files_to_custom_folders():
                         logging.error(f"Error moving file {file}: {e}")
                     break
 
+# Sort files by modification date
 def sort_files_by_mod_date():
-    # Create a folder for sorted files
     sorted_folder = os.path.join(desktop_path, "Sorted Files")
     os.makedirs(sorted_folder, exist_ok=True)
     for file in os.listdir(desktop_path):
+        if file in ignore_files:
+            continue
         file_path = os.path.join(desktop_path, file)
-        # Sort files into folders by modification date
         if os.path.isfile(file_path):
             try:
                 mod_time = os.path.getmtime(file_path)
